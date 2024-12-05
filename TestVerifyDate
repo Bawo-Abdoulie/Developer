@@ -1,0 +1,34 @@
+@IsTest
+public class TestVerifyDate {
+    @IsTest
+    static void testVerifyDateWithinRange() {
+        Date startDate = Date.newInstance(2023, 1, 1);
+        Date endDate = Date.newInstance(2023, 12, 31);
+        Date inputDate = Date.newInstance(2023, 6, 15);
+        
+        Date result = VerifyDate.verify(inputDate, startDate, endDate);
+        System.assertEquals(inputDate, result, 'The input date should be within the range');
+    }
+    
+    @IsTest
+    static void testVerifyDateBeforeRange() {
+        Date startDate = Date.newInstance(2023, 1, 1);
+        Date endDate = Date.newInstance(2023, 12, 31);
+        Date inputDate = Date.newInstance(2022, 12, 15);
+        
+        Date result = VerifyDate.verify(inputDate, startDate, endDate);
+        Date expectedDate = Date.newInstance(2023, 12, 31).toStartOfMonth().addMonths(1).addDays(-1);
+        System.assertEquals(expectedDate, result, 'The input date should be adjusted to the last day of the month within the range');
+    }
+    
+    @IsTest
+    static void testVerifyDateAfterRange() {
+        Date startDate = Date.newInstance(2023, 1, 1);
+        Date endDate = Date.newInstance(2023, 12, 31);
+        Date inputDate = Date.newInstance(2024, 1, 15);
+        
+        Date result = VerifyDate.verify(inputDate, startDate, endDate);
+        Date expectedDate = Date.newInstance(2023, 12, 31).toStartOfMonth().addMonths(1).addDays(-1);
+        System.assertEquals(expectedDate, result, 'The input date should be adjusted to the last day of the month within the range');
+    }
+}
