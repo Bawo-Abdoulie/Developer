@@ -1,0 +1,52 @@
+@IsTest
+public class TestRestrictContactByName {
+    @IsTest
+    static void testInsertInvalidName() {
+        Contact con = new Contact(LastName = 'INVALIDNAME');
+        Test.startTest();
+        try {
+            insert con;
+            System.assert(false, 'Expected exception was not thrown');
+        } catch (DmlException e) {
+            System.assert(e.getMessage().contains('Contacts with the last name "INVALIDNAME" cannot be inserted or updated.'));
+        }
+        Test.stopTest();
+    }
+    
+    @IsTest
+    static void testUpdateInvalidName() {
+        Contact con = new Contact(LastName = 'VALIDNAME');
+        insert con;
+        
+        con.LastName = 'INVALIDNAME';
+        Test.startTest();
+        try {
+            update con;
+            System.assert(false, 'Expected exception was not thrown');
+        } catch (DmlException e) {
+            System.assert(e.getMessage().contains('Contacts with the last name "INVALIDNAME" cannot be inserted or updated.'));
+        }
+        Test.stopTest();
+    }
+    
+    @IsTest
+    static void testInsertValidName() {
+        Contact con = new Contact(LastName = 'VALIDNAME');
+        Test.startTest();
+        insert con;
+        Test.stopTest();
+        System.assertEquals('VALIDNAME', con.LastName);
+    }
+    
+    @IsTest
+    static void testUpdateValidName() {
+        Contact con = new Contact(LastName = 'VALIDNAME');
+        insert con;
+        
+        con.LastName = 'UPDATEDNAME';
+        Test.startTest();
+        update con;
+        Test.stopTest();
+        System.assertEquals('UPDATEDNAME', con.LastName);
+    }
+}
