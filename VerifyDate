@@ -1,0 +1,8 @@
+public class VerifyDate {
+    public static Date verify(Date inputDate, Date startDate, Date endDate) {
+        if (inputDate < startDate || inputDate > endDate) {
+            return endDate.toStartOfMonth().addMonths(1).addDays(-1); // Returns the last day of the month within the range
+        }
+        return inputDate;
+    }
+}
